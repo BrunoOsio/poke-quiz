@@ -44,7 +44,7 @@ export const pokemonSlice = createSlice({
   reducers: {
     togglePokemonImage(state, action: PayloadAction<Pokemon>) {
       const targetPokemon = action.payload;
-
+  
       const targetPokemonIndex = state.value.findIndex(
         (pokemon) => pokemon.id === targetPokemon.id
       );
