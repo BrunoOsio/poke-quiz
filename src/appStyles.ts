@@ -1,20 +1,15 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { imageBlur } from "./shared/helpers/pokemonHelpers";
 
-type IsPokemonCorrectProps = {
+type PokemonProps = {
   isPokemonCorrect: boolean
   isPokemonAttemptsOver: boolean
 }
 
 type ImageProps = {
   attempts: number
-  isCorrect: boolean
-  isAttemptsOver: boolean
-}
-
-type PokemonAttemptsLabelProps = {
-  isCorrect?: boolean
-  isAttemptsOver?: boolean
+  isPokemonCorrect: boolean
+  isPokemonAttemptsOver: boolean
 }
 
 export const Container = styled.div`
@@ -30,6 +25,27 @@ export const Container = styled.div`
     font-weight: 300;
     color: #814a13;
   }
+
+  @media (max-width: 400px) {
+    width: 80vw;
+  }
+`;
+
+export const RestartButton = styled.button`
+  color: #814a13;
+  font-size: 1.4rem;
+  padding: 0;
+  width: 30px;
+  margin: 0 auto;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 export const PokemonsContainer = styled.div`
@@ -41,7 +57,7 @@ export const PokemonsContainer = styled.div`
   align-items: center;
   align-content: center;
   gap: 50px;
-  margin-top: 50px;
+  margin-top: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
   @media (max-width: 800px) {
@@ -49,14 +65,22 @@ export const PokemonsContainer = styled.div`
     justify-content: center;
     margin: 0 auto;
   }
+
+  @media (max-width: 400px) {
+    margin-top: 35px;
+  }
 `;
 
-export const PokemonContainer = styled.article<IsPokemonCorrectProps>`
+export const PokemonContainer = styled.article<PokemonProps>`
   width: 300px;
   box-shadow: 0px 0px 5px #ffeecc;
+  box-shadow: ${({isPokemonCorrect}) => isPokemonCorrect && "0px 0px 5px #32CD32"};
+  box-shadow: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver && "0px 0px 5px #f76e6e"};
   display: flex;
   flex-direction: column;
   border: 3px solid #ffeecc;
+  border: ${({isPokemonCorrect}) => isPokemonCorrect && "3px solid #32CD32"};
+  border: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver && "3px solid #f76e6e"} ;
   padding: 20px;
   border-radius: 10px;
   background-color: ${({isPokemonCorrect}) => isPokemonCorrect ? "#32CD32": "inherit"};
@@ -69,12 +93,12 @@ export const Image = styled.img<ImageProps>`
   width: 100%;
   cursor: pointer;
   filter: ${({attempts}) => `blur(${imageBlur(attempts)})`};
-  filter: ${({isCorrect}) => isCorrect && `blur(0px)`};
+  filter: ${({isPokemonCorrect}) => isPokemonCorrect && `blur(0px)`};
   user-select: none;
   pointer-events: none;
 
   &:hover {
-    opacity: ${({isCorrect}) => isCorrect && "1"};
+    opacity: ${({isPokemonCorrect}) => isPokemonCorrect && "1"};
   }
 `;
 
@@ -91,11 +115,14 @@ export const Input = styled.input`
   border-radius: 10px 0 0 10px;
   border: 3px solid #ffcc66;
   border-right: none;
-  color: #050505;
+  color: #814a13;
+  transition: all 0.2s ease-in-out;
 
   &:focus {
     border-color: #e69900;
     border-right: 2px solid #e69900;
+    border-radius: 10px 10px 10px 10px;
+    transform: scale(1.05);
   }
 `;
 
@@ -111,6 +138,17 @@ export const Button = styled.button`
 
   &:hover {
     background-color: #f0a92d;
+    border: 3px solid #f0a92d;
+    color: white;
+  }
+
+  &:focus {
+    border-color: #e69900;
+    border-right: 2px solid #e69900;
+    border-radius: 10px 10px 10px 10px;
+    transform: scale(1.05);
+    background-color: #f0a92d;
+    color: white;
   }
 `;
 
@@ -124,10 +162,10 @@ export const PokemonNameLabel = styled.span`
   opacity: 1;
 `;
 
-export const PokemonAttemptsLabel = styled.span<PokemonAttemptsLabelProps>`
+export const PokemonAttemptsLabel = styled.span<PokemonProps>`
   font-size: 1rem;
-  color: ${({isCorrect}) => isCorrect ? "white" : "#ccc"};
-  color: ${({isAttemptsOver}) => isAttemptsOver && "#aa0909"};
-  font-weight: ${({isAttemptsOver}) => isAttemptsOver ? "bold" : "inherit"};
+  color: ${({isPokemonCorrect}) => isPokemonCorrect ? "white" : "#ccc"};
+  color: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver && "#aa0909"};
+  font-weight: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver ? "bold" : "inherit"};
   text-align: center;
 `;

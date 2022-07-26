@@ -35,7 +35,7 @@ const findRandomPokemons = createAsyncThunk(
   }
 );
 
-const findMatchRandomPokemon = createAsyncThunk(
+const findMatchRandomPokemons = createAsyncThunk(
   "pokemon/findMatchRandomPokemon",
 
   async () => {
@@ -137,7 +137,7 @@ export const pokemonSlice = createSlice({
     });
 
     builder.addCase(
-      findMatchRandomPokemon.pending, 
+      findMatchRandomPokemons.pending, 
       (state) => {
       state.isLoading = true;
       state.isSuccess = false;
@@ -145,7 +145,7 @@ export const pokemonSlice = createSlice({
     });
 
     builder.addCase(
-      findMatchRandomPokemon.fulfilled,
+      findMatchRandomPokemons.fulfilled,
       (state, action: PayloadAction<Pokemon[]>) => {
         state.value = action.payload;
         state.isLoading = false;
@@ -155,7 +155,7 @@ export const pokemonSlice = createSlice({
     );
 
     builder.addCase(
-      findMatchRandomPokemon.rejected, 
+      findMatchRandomPokemons.rejected, 
       (state, action) => {
       state.isLoading = false;
       state.isSuccess = false;
@@ -166,6 +166,6 @@ export const pokemonSlice = createSlice({
 });
 
 export const { togglePokemonImage, setPokemonIsCorrect, setPokemonAttemptsIsOver } = pokemonSlice.actions;
-export { findPokemon, findRandomPokemons, findMatchRandomPokemon };
+export { findPokemon, findRandomPokemons, findMatchRandomPokemons };
 
 export default pokemonSlice.reducer;
