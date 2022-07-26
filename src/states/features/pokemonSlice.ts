@@ -19,21 +19,29 @@ const findPokemon = createAsyncThunk(
 
   async (pokemonName: string): Promise<Pokemon[]> => {
     const name = formatName(pokemonName);
-    const pokemons = await pokemonService.findByName(name);
+    const pokemons = await pokemonService.findManyByName(name);
 
-    return [pokemons];
+    return pokemons;
   }
 );
 
 const findRandomPokemons = createAsyncThunk(
   "pokemon/findRandomPokemons",
 
-  async () =>  {
-    const pokemons = await pokemonService.findRandom();
-
-    console.log(pokemons);
+  async () => {
+    const pokemons = await pokemonService.findRandom(6);
 
     return pokemons;
+  }
+);
+
+const findMatchRandomPokemon = createAsyncThunk(
+  "pokemon/findMatchRandomPokemon",
+
+  async () => {
+    const pokemon = await pokemonService.findRandom(3);
+    console.log(pokemon);
+    return pokemon;
   }
 );
 
@@ -44,16 +52,39 @@ export const pokemonSlice = createSlice({
   reducers: {
     togglePokemonImage(state, action: PayloadAction<Pokemon>) {
       const targetPokemon = action.payload;
-  
+
       const targetPokemonIndex = state.value.findIndex(
         (pokemon) => pokemon.id === targetPokemon.id
       );
 
       state.value[targetPokemonIndex].isShowBackface = !targetPokemon.isShowBackface;
     },
+
+    setPokemonIsCorrect(state, action: PayloadAction<Pokemon>) {
+      const targetPokemon = action.payload;
+
+      const targetPokemonIndex = state.value.findIndex(
+        (pokemon) => pokemon.id === targetPokemon.id
+      );
+
+      state.value[targetPokemonIndex].isCorrect = true;
+    },
+
+    setPokemonAttemptsIsOver(state, action: PayloadAction<Pokemon>) {
+      const targetPokemon = action.payload;
+
+      const targetPokemonIndex = state.value.findIndex(
+        (pokemon) => pokemon.id === targetPokemon.id
+      );
+
+      state.value[targetPokemonIndex].isAttemptsOver = true;
+    }
+
   },
   extraReducers: (builder) => {
-    builder.addCase(findPokemon.pending, (state) => {
+    builder.addCase(
+      findPokemon.pending, 
+      (state) => {
       state.isLoading = true;
       state.isSuccess = false;
       state.isError = false;
@@ -69,14 +100,18 @@ export const pokemonSlice = createSlice({
       }
     );
 
-    builder.addCase(findPokemon.rejected, (state, action) => {
+    builder.addCase(
+      findPokemon.rejected, 
+      (state, action) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
       state.error = action.error.message || "Something went wrong";
     });
 
-    builder.addCase(findRandomPokemons.pending, (state) => {
+    builder.addCase(
+      findRandomPokemons.pending, 
+      (state) => {
       state.isLoading = true;
       state.isSuccess = false;
       state.isError = false;
@@ -92,17 +127,45 @@ export const pokemonSlice = createSlice({
       }
     );
 
-    builder.addCase(findRandomPokemons.rejected, (state, action) => {
+    builder.addCase(
+      findRandomPokemons.rejected, 
+      (state, action) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
       state.error = action.error.message || "Something went wrong";
     });
-    
+
+    builder.addCase(
+      findMatchRandomPokemon.pending, 
+      (state) => {
+      state.isLoading = true;
+      state.isSuccess = false;
+      state.isError = false;
+    });
+
+    builder.addCase(
+      findMatchRandomPokemon.fulfilled,
+      (state, action: PayloadAction<Pokemon[]>) => {
+        state.value = action.payload;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+      }
+    );
+
+    builder.addCase(
+      findMatchRandomPokemon.rejected, 
+      (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isError = true;
+      state.error = action.error.message || "Something went wrong";
+    });
   },
 });
 
-export const { togglePokemonImage } = pokemonSlice.actions;
-export { findPokemon, findRandomPokemons };
+export const { togglePokemonImage, setPokemonIsCorrect, setPokemonAttemptsIsOver } = pokemonSlice.actions;
+export { findPokemon, findRandomPokemons, findMatchRandomPokemon };
 
 export default pokemonSlice.reducer;

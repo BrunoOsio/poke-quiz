@@ -5,5 +5,7 @@ export type Pokemon = {
     frontFace: string,
     backFace: string
   },
-  isShowBackface: boolean
+  isShowBackface: boolean,
+  isCorrect: boolean,
+  isAttemptsOver: boolean
 }
