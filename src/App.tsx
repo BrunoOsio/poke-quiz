@@ -35,7 +35,7 @@ function App() {
   } = useAppSelector((state) => state.pokemon);
 
   const pokemonInputsInitialState = ["", "", ""];
-  const attemptsInitialState = [0, 0, 0];
+  const attemptsInitialState = [1, 1, 1];
 
   const [pokemonInputs, setPokemonInputs] = useState<string[]>(
     pokemonInputsInitialState
@@ -60,8 +60,7 @@ function App() {
     pokemon: Pokemon,
     pokemonIndex: number
   ) => {
-    if (event.code === "Enter") 
-      handleCheckPokemonAnswer(pokemon, pokemonIndex);
+    if (event.code === "Enter") handleCheckPokemonAnswer(pokemon, pokemonIndex);
   };
 
   const handleCheckPokemonAnswer = (pokemon: Pokemon, pokemonIndex: number) => {
@@ -75,7 +74,7 @@ function App() {
       updatedAttempts[pokemonIndex] = attempts[pokemonIndex] + 1;
 
       setAttempts(updatedAttempts);
-      
+
       const updatedPokemonInputs = [...pokemonInputs];
       updatedPokemonInputs[pokemonIndex] = "";
       setPokemonInputs(updatedPokemonInputs);
@@ -186,14 +185,28 @@ function App() {
                   )}
                 </SubmitContainer>
 
-                {!pokemon.isAttemptsOver && (
+                {!pokemon.isAttemptsOver && !pokemon.isCorrect && (
                   <PokemonAttemptsLabel isPokemonCorrect={pokemon.isCorrect}>
-                    Tentativas: {attempts[index]}
+                    Tentativas: {attempts[index] - 1}
+                  </PokemonAttemptsLabel>
+                )}
+
+                {(pokemon.isCorrect && attempts[index] != 1) && (
+                  <PokemonAttemptsLabel isPokemonCorrect={pokemon.isCorrect}>
+                    Acertado em {attempts[index]} tentativas
+                  </PokemonAttemptsLabel>
+                )}
+
+                {(pokemon.isCorrect && attempts[index] == 1) && (
+                  <PokemonAttemptsLabel isPokemonCorrect={pokemon.isCorrect}>
+                    Acertado de primeira!
                   </PokemonAttemptsLabel>
                 )}
 
                 {pokemon.isAttemptsOver && (
-                  <PokemonAttemptsLabel isPokemonAttemptsOver={pokemon.isAttemptsOver}>
+                  <PokemonAttemptsLabel
+                    isPokemonAttemptsOver={pokemon.isAttemptsOver}
+                  >
                     Não descobriu o Pokémon
                   </PokemonAttemptsLabel>
                 )}

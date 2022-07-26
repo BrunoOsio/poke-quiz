@@ -1,12 +1,12 @@
 import styled, { keyframes } from "styled-components";
 import { imageBlur } from "./shared/helpers/pokemonHelpers";
 
-type PokemonProps = {
-  isPokemonCorrect: boolean
-  isPokemonAttemptsOver: boolean
+interface PokemonProps {
+  isPokemonCorrect?: boolean
+  isPokemonAttemptsOver?: boolean
 }
 
-type ImageProps = {
+interface ImageProps {
   attempts: number
   isPokemonCorrect: boolean
   isPokemonAttemptsOver: boolean
@@ -74,18 +74,17 @@ export const PokemonsContainer = styled.div`
 export const PokemonContainer = styled.article<PokemonProps>`
   width: 300px;
   box-shadow: 0px 0px 5px #ffeecc;
-  box-shadow: ${({isPokemonCorrect}) => isPokemonCorrect && "0px 0px 5px #32CD32"};
+  box-shadow: ${({isPokemonCorrect}) => isPokemonCorrect && "0px 0px 5px #65d265"};
   box-shadow: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver && "0px 0px 5px #f76e6e"};
   display: flex;
   flex-direction: column;
   border: 3px solid #ffeecc;
-  border: ${({isPokemonCorrect}) => isPokemonCorrect && "3px solid #32CD32"};
+  border: ${({isPokemonCorrect}) => isPokemonCorrect && "3px solid #65d265"};
   border: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver && "3px solid #f76e6e"} ;
   padding: 20px;
   border-radius: 10px;
-  background-color: ${({isPokemonCorrect}) => isPokemonCorrect ? "#32CD32": "inherit"};
+  background-color: ${({isPokemonCorrect}) => isPokemonCorrect && "#65d265"};
   background-color: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver && "#f76e6e"};
-  opacity: ${({isPokemonCorrect}) => isPokemonCorrect ? "0.5": "1"};
   transition: all 0.2s ease-in-out;
 `;
 
@@ -166,6 +165,6 @@ export const PokemonAttemptsLabel = styled.span<PokemonProps>`
   font-size: 1rem;
   color: ${({isPokemonCorrect}) => isPokemonCorrect ? "white" : "#ccc"};
   color: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver && "#aa0909"};
-  font-weight: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver ? "bold" : "inherit"};
+  font-weight: ${({isPokemonAttemptsOver, isPokemonCorrect}) => (isPokemonAttemptsOver || isPokemonCorrect) && "bold"};
   text-align: center;
 `;
