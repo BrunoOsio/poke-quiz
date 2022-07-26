@@ -86,6 +86,10 @@ export const PokemonContainer = styled.article<PokemonProps>`
   background-color: ${({isPokemonCorrect}) => isPokemonCorrect && "#65d265"};
   background-color: ${({isPokemonAttemptsOver}) => isPokemonAttemptsOver && "#f76e6e"};
   transition: all 0.2s ease-in-out;
+
+  @media (max-width: 400px) {
+    margin-bottom: 30px;
+  }
 `;
 
 export const Image = styled.img<ImageProps>`

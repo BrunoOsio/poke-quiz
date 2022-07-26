@@ -40,7 +40,6 @@ const findMatchRandomPokemons = createAsyncThunk(
 
   async () => {
     const pokemon = await pokemonService.findRandom(3);
-    console.log(pokemon);
     return pokemon;
   }
 );

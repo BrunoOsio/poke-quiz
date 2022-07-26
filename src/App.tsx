@@ -67,7 +67,7 @@ function App() {
     if (handleCheckPokemonAttemptsIsOver(pokemon, pokemonIndex)) return;
 
     const isPokemonNameCorrect =
-      pokemonInputs[pokemonIndex] === formatName(pokemon.name);
+      formatName(pokemonInputs[pokemonIndex]) == formatName(pokemon.name);
 
     if (!isPokemonNameCorrect) {
       const updatedAttempts = [...attempts];
