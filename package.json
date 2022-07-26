@@ -1,7 +1,7 @@
 {
   "name": "pokesmonn",
-  "homepage": "https://brunoosio.github.io",
-  "private": true,
+  "homepage": "https://brunoosio.github.io/poke-quiz",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
